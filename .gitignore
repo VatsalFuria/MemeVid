@@ -1,0 +1,7 @@
+# Local environment secrets
+.env
+
+# Virtual environment folder (from earlier steps)
+.venv/
+__pycache__/
+*.pyc
