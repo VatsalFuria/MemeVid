@@ -2,4 +2,9 @@ fastapi
 uvicorn[standard]
 pydantic-settings
 pytest
-httpx
+httpx2
+
+# Stage 2 — forced alignment (PROJECT_SPEC.md §5, §9)
+torch
+transformers
+ctc-forced-aligner @ git+https://github.com/MahmoudAshraf97/ctc-forced-aligner.git

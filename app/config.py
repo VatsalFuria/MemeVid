@@ -1,4 +1,6 @@
 from functools import lru_cache
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,6 +16,15 @@ class Settings(BaseSettings):
     # v1 input caps (PROJECT_SPEC.md §10) — named constants, never literals downstream
     audio_max_duration_seconds: int = 180   # Flow 1 cap: 3 minutes
     script_max_words: int = 200             # Flow 2 cap: ~200 words
+
+    # Stage 2 — forced alignment (PROJECT_SPEC.md §5, §9)
+    alignment_device: str = "cpu"           # set ALIGNMENT_DEVICE=cuda in .env if you have a GPU
+    alignment_batch_size: int = 16
+
+    # Runtime data directory (gitignored — see .gitignore). For job artifacts only;
+    # fixed test fixtures (e.g. the milestone-2 sample) live in tests/fixtures/ instead,
+    # since those need to be committed for CI to see them.
+    data_dir: Path = Path("data")
 
 
 @lru_cache
