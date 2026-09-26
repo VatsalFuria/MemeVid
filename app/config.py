@@ -84,6 +84,12 @@ class Settings(BaseSettings):
     subtitle_font_name: str = "Noto Sans Devanagari"
     subtitle_font_size: int = 28
 
+        # Stage 3 — English NLP tagging (PROJECT_SPEC.md §5, §9). spaCy's
+    # small English pipeline — fast, mature lemmatization/tagging.
+    # Requires a one-time `python -m spacy download en_core_web_sm`
+    # (not a pip dependency — see app/pipeline/tag_en.py).
+    spacy_model_id_en: str = "en_core_web_sm"
+
 
 @lru_cache
 def get_settings() -> Settings:

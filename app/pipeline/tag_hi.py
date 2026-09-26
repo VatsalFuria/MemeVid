@@ -27,13 +27,7 @@ from functools import lru_cache
 import stanza
 
 from app.config import get_settings
-
-# Universal POS tags that count as a "content word" (PROJECT_SPEC.md §5
-# Stage 3) -- consistent across both taggers since both emit UD `upos`
-# tags, not treebank-specific ones. Duplicated here and (presumably) in the
-# English tagger for now; hoist to one shared constant once the two are
-# wired together behind a single dispatch.
-_CONTENT_POS = frozenset({"NOUN", "PROPN", "VERB", "ADJ", "ADV"})
+from app.pipeline.tokens import CONTENT_POS, Token
 
 
 @dataclass(frozen=True)
@@ -98,7 +92,7 @@ def tag_hindi(text: str) -> list[Token]:
                     text=word.text,
                     lemma=word.lemma or word.text,
                     pos=pos,
-                    is_content=pos in _CONTENT_POS,
+                    is_content=pos in CONTENT_POS,
                 )
             )
     return tokens

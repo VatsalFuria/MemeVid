@@ -39,17 +39,7 @@ from app.pipeline.translate_hi import translate_hindi_lemma
 
 logger = logging.getLogger(__name__)
 
-_DEVANAGARI_RANGE = (0x0900, 0x097F)
-
-
-def _is_devanagari(text: str) -> bool:
-    """First-pass script heuristic (PROJECT_SPEC.md §5 Stage 3), reused here
-    to decide whether a lemma needs translating before it's a usable Pexels
-    query. Script-based, not job-language-based -- this is what makes it
-    work for `mixed` jobs without this module needing to know the job's
-    selected language at all.
-    """
-    return any(_DEVANAGARI_RANGE[0] <= ord(ch) <= _DEVANAGARI_RANGE[1] for ch in text)
+from app.pipeline.tokens import is_devanagari as _is_devanagari
 
 
 class ImageCacheStore(Protocol):

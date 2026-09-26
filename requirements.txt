@@ -20,3 +20,7 @@ stanza
 
 sentencepiece
 sacremoses
+
+# Stage 3 - English NLP tagging (PROJECT_SPEC.md §5, §9)
+# after installing, run: python -m spacy download en_core_web_sm
+spacy
