@@ -11,3 +11,9 @@ ctc-forced-aligner @ git+https://github.com/MahmoudAshraf97/ctc-forced-aligner.g
 
 # Stage 3a - TTS
 scipy
+
+# Stage 3b - ASR
+faster-whisper
+
+#Stage 3c -Hindi
+stanza
