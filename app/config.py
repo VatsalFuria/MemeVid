@@ -26,6 +26,12 @@ class Settings(BaseSettings):
     # since those need to be committed for CI to see them.
     data_dir: Path = Path("data")
 
+    # TTS (PROJECT_SPEC.md §5 Stage 1b, §9) — MMS-TTS per-language checkpoints.
+    # Both are CC-BY-NC-4.0 (non-commercial) as of writing; §10 requires
+    # re-confirming licensing before any "real service" use.
+    tts_model_id_en: str = "facebook/mms-tts-eng"
+    tts_model_id_hi: str = "facebook/mms-tts-hin"
+
 
 @lru_cache
 def get_settings() -> Settings:

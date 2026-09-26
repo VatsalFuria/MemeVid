@@ -8,3 +8,6 @@ httpx2
 torch
 transformers
 ctc-forced-aligner @ git+https://github.com/MahmoudAshraf97/ctc-forced-aligner.git
+
+# Stage 3a - TTS
+scipy
