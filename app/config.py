@@ -45,10 +45,22 @@ class Settings(BaseSettings):
     # confirmed a local GPU setup.
     stanza_hi_use_gpu: bool = False
 
-    # Stage 4 — Hindi lemma -> English translation for Pexels image search
+    # Stage 3 — Hindi lemma -> English translation for Pexels image search
     # (PROJECT_SPEC.md §5, §9). Apache-2.0, unlike the MMS-TTS checkpoints —
     # no commercial-use caveat to flag here.
     translation_model_id_hi_en: str = "Helsinki-NLP/opus-mt-hi-en"
+
+        # Stage 4 — word -> image mapping (PROJECT_SPEC.md §5 Stage 4, §9)
+    pexels_base_url: str = "https://api.pexels.com/v1/search"
+    pexels_request_timeout_seconds: float = 10.0
+    # Stop calling Pexels once its own rate-limit header reports at or below
+    # this many requests left this window; fall back to a placeholder
+    # instead of risking a 429 mid-render (PROJECT_SPEC.md §10).
+    pexels_min_rate_limit_remaining: int = 5
+    # Bundled neutral fallback images (PROJECT_SPEC.md §5 Stage 4) -- ship
+    # at least one real image file here; this repo doesn't check in binary
+    # assets in this pass, so add them before deploying.
+    placeholder_images_dir: Path = Path("app/assets/placeholders")
 
 
 @lru_cache
