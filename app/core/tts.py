@@ -22,6 +22,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
+import numpy as np
 import scipy.io.wavfile
 import torch
 from transformers import AutoTokenizer, VitsModel
@@ -107,8 +108,17 @@ def synthesize_speech(
     with torch.no_grad():
         waveform = model(**inputs).waveform
 
-    audio = waveform[0].cpu().numpy()
+    audio_float = waveform[0].cpu().numpy()
     sample_rate = model.config.sampling_rate
+
+    # scipy.io.wavfile writes IEEE-float WAV (format tag 3) verbatim for a
+    # float32 array. Python's stdlib `wave` module -- and a fair amount of
+    # other tooling, including what Stage 5's ffmpeg pass will eventually
+    # expect -- only understands PCM (format tag 1) and raises "unknown
+    # format: 3" on anything else. Convert to 16-bit PCM, the safe,
+    # universally-supported default.
+    audio = np.clip(audio_float, -1.0, 1.0)
+    audio = (audio * 32767).astype(np.int16)
 
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)

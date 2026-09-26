@@ -53,15 +53,18 @@ def _load_pipeline() -> stanza.Pipeline:
     stanza.download('hi')"` ahead of time (e.g. in the Docker build) to
     avoid eating that delay on the worker's first real job.
 
-    `mwt` is included even though Hindi doesn't need multi-word-token
-    expansion in practice -- it's a no-op for languages that don't need it,
-    and `lemma` formally depends on it having run, matching the pattern in
-    Stanza's own docs for every language, not just ones that need it.
+    No `mwt` processor here. An earlier version of this file included it
+    "just in case", following a pattern that's common across many Stanza
+    language pipelines (English included) where mwt is a harmless no-op.
+    Hindi's HDTB treebank doesn't ship an mwt model at all, though, and
+    asking for one raises `UnsupportedProcessorError` -- confirmed by
+    actually running it, which is what should have happened before writing
+    that comment the first time.
     """
     settings = get_settings()
     return stanza.Pipeline(
         lang="hi",
-        processors="tokenize,mwt,pos,lemma",
+        processors="tokenize,pos,lemma",
         use_gpu=settings.stanza_hi_use_gpu,
     )
 

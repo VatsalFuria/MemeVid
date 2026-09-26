@@ -17,3 +17,6 @@ faster-whisper
 
 #Stage 3c -Hindi
 stanza
+
+sentencepiece
+sacremoses
