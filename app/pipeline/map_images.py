@@ -166,6 +166,16 @@ def _placeholder_location(lemma: str) -> str:
     index = zlib.crc32(lemma.encode("utf-8")) % len(candidates)
     return str(candidates[index])
 
+def placeholder_location(seed: str) -> str:
+    """Public entry point to Stage 4's placeholder-image selection, for
+    other stages that need "some neutral image" without going through the
+    full cache/Pexels/retry flow — e.g. render.py's leading-non-content-
+    word and lead-in-gap edge cases (PROJECT_SPEC.md §5 Stage 5). Same
+    deterministic-per-seed behavior as `_placeholder_location`'s other
+    callers in this module.
+    """
+    return _placeholder_location(seed)
+
 
 def _to_query(lemma: str) -> str:
     return translate_hindi_lemma(lemma) if _is_devanagari(lemma) else lemma

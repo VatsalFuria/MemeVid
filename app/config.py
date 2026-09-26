@@ -62,6 +62,28 @@ class Settings(BaseSettings):
     # assets in this pass, so add them before deploying.
     placeholder_images_dir: Path = Path("app/assets/placeholders")
 
+        # Stage 5 — video assembly & render (PROJECT_SPEC.md §5 Stage 5, §9).
+    # Direct ffmpeg calls (concat demuxer + `subtitles` filter) — an
+    # external system binary, not a pip dependency; must be on PATH (or
+    # point ffmpeg_binary at an absolute path).
+    ffmpeg_binary: str = "ffmpeg"
+    render_width: int = 1280
+    render_height: int = 720
+    render_video_codec: str = "libx264"
+    render_audio_codec: str = "aac"
+    render_crf: int = 20                          # libx264 quality; lower = better/larger
+    render_image_download_timeout_seconds: float = 15.0
+
+    # Devanagari requirement (PROJECT_SPEC.md §5, §10): the `subtitles`
+    # filter renders through libass, which needs a font actually covering
+    # Devanagari glyphs available to it, or Hindi captions render as
+    # boxes. Bundle the font file at this path into the Docker image —
+    # like placeholder_images_dir above, no binary asset is checked in by
+    # this pass.
+    subtitle_fonts_dir: Path = Path("app/assets/fonts")
+    subtitle_font_name: str = "Noto Sans Devanagari"
+    subtitle_font_size: int = 28
+
 
 @lru_cache
 def get_settings() -> Settings:
